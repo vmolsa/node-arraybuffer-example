@@ -3,7 +3,9 @@ var sample = require('./build/Release/sample.node');
 function PrintJS(arrayBuffer) {
   var buffer = new Buffer(new Uint8Array(arrayBuffer));
   
-  console.log('JS:', "'" + buffer.toString('utf8') + "'", Buffer.byteLength(buffer, 'utf8'));
+  if (Buffer.byteLength(buffer, 'utf8')) {  
+    console.log('JS:', "'" + buffer.toString('utf8') + "'", Buffer.byteLength(buffer, 'utf8'));
+  }
 }
 
 function Print(arrayBuffer) {
@@ -30,7 +32,7 @@ function String() {
 }
 
 for (var index = 0; index < 100; index++) {
-  Print();
+  Print('New ArrayBuffer From String!');
   Create();
   String();
 }

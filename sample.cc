@@ -1,5 +1,5 @@
-#include <string>
 #include <node.h>
+#include <string>
 #include "ArrayBuffer.h"
 
 using namespace v8;
@@ -25,44 +25,18 @@ void CreateArrayBuffer(const v8::FunctionCallbackInfo<v8::Value>& args) {
 void PrintWrapped(const v8::FunctionCallbackInfo<v8::Value>& args) {
   Isolate *isolate = args.GetIsolate();
   
-  if (args[0]->IsArrayBuffer() || args[0]->IsTypedArray()) {
-    Local<ArrayBuffer> arraybuffer;
+  node::ArrayBuffer *buffer = node::ArrayBuffer::New(isolate, args[0]);       
+  std::string str = buffer->Unwrap<std::string>();
 
-    if (args[0]->IsArrayBuffer()) {
-      arraybuffer = Local<ArrayBuffer>::Cast(args[0]);
-    } else {
-      Local<ArrayBufferView> view = Local<ArrayBufferView>::Cast(args[0]);
-      arraybuffer = view->Buffer();
-    }
-
-    if (!arraybuffer.IsEmpty()) {
-       node::ArrayBuffer *buffer = node::ArrayBuffer::New(isolate, arraybuffer);       
-       std::string str = buffer->Unwrap<std::string>();
-       
-       printf("Wrapped: '%s', %zu\n", str.data(), str.length());
-    }
-  }
+  printf("node::ArrayBuffer: '%s', %zu\n", str.data(), str.length());
 }
 
 void PrintArrayBuffer(const v8::FunctionCallbackInfo<v8::Value>& args) {
   Isolate *isolate = args.GetIsolate();
 
-  if (args[0]->IsArrayBuffer() || args[0]->IsTypedArray()) {
-    Local<ArrayBuffer> arraybuffer;
-
-    if (args[0]->IsArrayBuffer()) {
-      arraybuffer = Local<ArrayBuffer>::Cast(args[0]);
-    } else {
-      Local<ArrayBufferView> view = Local<ArrayBufferView>::Cast(args[0]);
-      arraybuffer = view->Buffer();
-    }
-
-    if (!arraybuffer.IsEmpty()) {
-       node::ArrayBuffer *buffer = node::ArrayBuffer::New(isolate, arraybuffer);
-       
-       printf("Buffer Size: '%s', %zu\n", buffer->String(), buffer->Length());
-    }
-  }
+  node::ArrayBuffer *buffer = node::ArrayBuffer::New(isolate, args[0]);
+  
+  printf("node::ArrayBuffer: '%s', %zu\n", buffer->ToUtf8(), buffer->Length());
 }
 
 void DisposeMemory(const v8::FunctionCallbackInfo<v8::Value>& args) {
