@@ -9,32 +9,17 @@ function PrintJS(arrayBuffer) {
 }
 
 function Print(arrayBuffer) {
-  if (!arrayBuffer) {
-    var buf = new Buffer(5);
-    buf.write('HELLO', 0);
-
-    var arrayBuffer = new Uint8Array(buf).buffer;    
-  }
- 
   sample.PrintArrayBuffer(arrayBuffer);
   PrintJS(arrayBuffer);
 }
 
-function Create() {
-  var arrayBuffer = sample.CreateArrayBuffer();
-  Print(arrayBuffer);
-  sample.PrintWrapped(arrayBuffer);
-}
+var buf = new Buffer(5);
+buf.write('HELLO', 0);
 
-function String() {
-  var arrayBuffer = sample.StringArrayBuffer();
-  Print(arrayBuffer);
-}
+var arrayBuffer = new Uint8Array(buf).buffer;
 
-for (var index = 0; index < 100; index++) {
-  Print('New ArrayBuffer From String!');
-  Create();
-  String();
-}
+Print(arrayBuffer);
+Print('New ArrayBuffer From String!');
+Print(sample.CreateArrayBuffer());
 
 sample.DisposeMemory();
